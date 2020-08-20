@@ -18,6 +18,7 @@
 
       Optional arguments:
       --outdir                      Output directory to place final BLAST output
+      --outFile                     If your script requires it to be written to a file
       --threads                      Number of CPUs to use during blast job [16]
       --help                         This usage statement.
      """
@@ -47,16 +48,19 @@ process inputScript {
   publishDir params.outdir
 
   input:
-  file FILE from inputFiles.split()
+  file FILE from inputFiles.splitText()
 
   output:
   println "process finished for FILE"
 
   script:
   """
-  $params.script $FILE
+  echo "$params.script `cat $FILE`" >log
+  $params.script `cat $FILE`
   """
 }
+
+
 
 
     def isuGIFHeader() {
