@@ -21,12 +21,14 @@
       --threads                      Number of CPUs to use during blast job [16]
       --help                         This usage statement.
      """
+}
 
      // Show help message
      if (params.help) {
          helpMessage()
          exit 0
      }
+
 
 process createInput {
 
@@ -39,19 +41,45 @@ process createInput {
   """
 }
 
-process runScript {
+
+process inputScript {
 
   publishDir params.outdir
 
   input:
-  file inputFile from inputFiles
+  file FILE from inputFiles.split()
 
   output:
-  println "process finished for $inputFile"
+  println "process finished for FILE"
 
   script:
   """
-  $params.script
+  $params.script $FILE
   """
-
 }
+
+
+    def isuGIFHeader() {
+        // Log colors ANSI codes
+        c_reset = params.monochrome_logs ? '' : "\033[0m";
+        c_dim = params.monochrome_logs ? '' : "\033[2m";
+        c_black = params.monochrome_logs ? '' : "\033[1;90m";
+        c_green = params.monochrome_logs ? '' : "\033[1;92m";
+        c_yellow = params.monochrome_logs ? '' : "\033[1;93m";
+        c_blue = params.monochrome_logs ? '' : "\033[1;94m";
+        c_purple = params.monochrome_logs ? '' : "\033[1;95m";
+        c_cyan = params.monochrome_logs ? '' : "\033[1;96m";
+        c_white = params.monochrome_logs ? '' : "\033[1;97m";
+        c_red = params.monochrome_logs ? '' :  "\033[1;91m";
+
+        return """    -${c_dim}--------------------------------------------------${c_reset}-
+        ${c_white}                                ${c_red   }\\\\------${c_yellow}---//       ${c_reset}
+        ${c_white}  ___  ___        _   ___  ___  ${c_red   }  \\\\---${c_yellow}--//        ${c_reset}
+        ${c_white}   |  (___  |  | / _   |   |_   ${c_red   }    \\-${c_yellow}//         ${c_reset}
+        ${c_white}  _|_  ___) |__| \\_/  _|_  |    ${c_red  }    ${c_yellow}//${c_red  } \\        ${c_reset}
+        ${c_white}                                ${c_red   }  ${c_yellow}//---${c_red  }--\\\\       ${c_reset}
+        ${c_white}                                ${c_red   }${c_yellow}//------${c_red  }---\\\\       ${c_reset}
+        ${c_cyan}  isugifNF/blast  v${workflow.manifest.version}       ${c_reset}
+        -${c_dim}--------------------------------------------------${c_reset}-
+        """.stripIndent()
+    }
