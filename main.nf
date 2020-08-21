@@ -18,7 +18,7 @@
 
       Optional arguments:
       --outdir                      Output directory to place final BLAST output
-      --outFile                     If your script requires it to be written to a file
+      --outFile                     regular expression pattern for your outfiles
       --threads                      Number of CPUs to use during blast job [16]
       --help                         This usage statement.
      """
@@ -45,13 +45,14 @@ process createInput {
 
 process inputScript {
 
-  publishDir params.outdir
+  publishDir params.outdir, mode: 'copy', pattern: '*'
 
   input:
   file FILE from inputFiles.splitText()
 
   output:
   println "process finished for FILE"
+  //path "*.txt"
 
   script:
   """
