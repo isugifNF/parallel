@@ -1,4 +1,4 @@
-# isugifNF/parallelNF
+# isugifNF/parallel
 
 ```
 ----------------------------------------------------
