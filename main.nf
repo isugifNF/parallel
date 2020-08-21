@@ -48,16 +48,17 @@ process inputScript {
   publishDir params.outdir, mode: 'copy', pattern: '*'
 
   input:
-  file FILE from inputFiles.splitText()
+  val inFILE from inputFiles.splitText()
+  //String fileContents = new File(inputFiles.splitText()).text
 
   output:
-  println "process finished for FILE"
+  println "process finished for inFILE"
   //path "*.txt"
 
   script:
+
   """
-  echo "$params.script `cat $FILE`" >log
-  $params.script `cat $FILE`
+  $params.script $inFILE
   """
 }
 
