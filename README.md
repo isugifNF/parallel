@@ -53,7 +53,7 @@ INPUT: In this example I am using the raw reads from a a Nanopore run I got back
 
 * Using nextflow
 ```
-nextflow run main.nf --input "tar -tvf $PWD/Green_13_SRE.tar |awk '(/\.fastq/ && /pass/)' | awk '{print \$NF}'" --script "tar -xvf $PWD/Green_13_SRE.tar" --threads 36
+nextflow run isugifNF/parallel --input "tar -tvf $PWD/Green_13_SRE.tar |awk '(/\.fastq/ && /pass/)' | awk '{print \$NF}'" --script "tar -xvf $PWD/Green_13_SRE.tar" --threads 36
 ```
 * Using xargs
 ```
@@ -67,7 +67,7 @@ There was actually very little speed up in this example as I believe the IO spee
 Here I use `ls` to identify all the fastq files I want to run fastqc in the `--input` and place the `fastqc` script in the `--script` parameter
 
 ```
-nextflow run main.nf --input "ls $PWD/fastqfiles/*" --script "fastqc -t 36 -outdir $PWD/fastqcout" --threads 36 -profile condo
+nextflow run isugifNF/parallel --input "ls $PWD/fastqfiles/*" --script "fastqc -t 36 -outdir $PWD/fastqcout" --threads 36 -profile condo
 ```
 
 ## Dependencies if running locally
